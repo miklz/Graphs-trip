@@ -19,6 +19,7 @@
 
 #define FALSE 0
 #define TRUE 1
+#define INFINIT -1
 
 //#define DEBUG
 
@@ -255,7 +256,7 @@ void dfs(grafo_t *grafo, vertice_t* inicial)
 
     push(inicial, pilha);
 
-    while(!pilha_vazia(pilha)){
+    while(!fila_vazia(pilha)){
         u = pop(pilha);
         lista_aresta = vertice_get_arestas(u);
         no = obter_cabeca(lista_aresta);
@@ -271,6 +272,50 @@ void dfs(grafo_t *grafo, vertice_t* inicial)
     }
 }
 
+void prim_algorithm(grafo_t* grafo, int id){
+	
+	int	dist, flag = 0, peso;
+	no_t *no;
+    fila_t* fila;
+    arestas_t *aresta;
+    vertice_t *u, *v, *aux;
+    lista_enc_t *lista_aresta, *lista_vertice;
+	grafo_t* path;
+	
+	fila = cria_fila();
+	no = obter_cabeca(grafo->vertices)
+
+	while(no){
+		v = obter_dado(no);
+		vertice_visitado(v, INFINIT);
+		vertice_set_pai(v, NULL);
+		if(vertice_get_id(v)==id){
+			vertice_visitado(v, FALSE);
+			enqueue(v, fila);
+		}
+        no = obtem_proximo(no);
+	}
+	
+	while(!fila_vazia(fila)){
+		u = dequeue(fila);
+		lista_aresta = vertice_get_arestas(u);
+		no = obter_cabeca(lista_aresta);
+		while(no){
+			aresta = obter_dado(no);
+            v = aresta_get_adjacente(aresta);
+			if(flag = 1){
+				if(vertices_comprimento(u,v) < vertices_comprimento(u,aux))
+					aux = v;
+			}
+			else
+				aux = v;
+			flag = 1;
+			no = obtem_proximo(no);
+		}
+		enqueue(aux, fila);
+	}
+	
+}
 /**
   * @brief  Exporta o grafo em formato dot.
   * @param	filename: nome do arquivo dot gerado
