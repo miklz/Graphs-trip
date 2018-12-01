@@ -18,7 +18,7 @@ struct vertices {
 
 	/* Informacoes para componentes conexos */
 	int id_grupo;
-	int dist;
+	float dist;
 	int visitado;
 	vertice_t* pai;
 	vertice_t* antecessor_caminho;

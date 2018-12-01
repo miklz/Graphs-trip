@@ -274,15 +274,14 @@ void dfs(grafo_t *grafo, vertice_t* inicial)
 
 void prim_algorithm(grafo_t* grafo, int id){
 	
-	int	dist, flag = 0, peso;
-	no_t *no;
+	no_t *no, *no_vert;
     fila_t* fila;
     arestas_t *aresta;
-    vertice_t *u, *v, *aux;
-    lista_enc_t *lista_aresta, *lista_vertice;
-	grafo_t* path;
+    vertice_t *u, *v;
+    lista_enc_t *lista_aresta, *lista_vertices;
 	
 	fila = cria_fila();
+	lista_vertices = cria_lista_enc();
 	no = obter_cabeca(grafo->vertices)
 
 	while(no){
@@ -303,16 +302,22 @@ void prim_algorithm(grafo_t* grafo, int id){
 		while(no){
 			aresta = obter_dado(no);
             v = aresta_get_adjacente(aresta);
-			if(flag = 1){
-				if(vertices_comprimento(u,v) < vertices_comprimento(u,aux))
-					aux = v;
+			if(vertice_get_visit(v) == INFINIT){
+				vertice_set_pai(v,u);
+				vertice_set_dist(v,aresta_get_peso(aresta));
+				enqueue(v,fila);
 			}
-			else
-				aux = v;
-			flag = 1;
+			else{
+				if(vertices_comprimento(u,v) < vertice_get_dist(v)){
+					vertice_set_pai(v,u);
+					vertice_set_dist(v,aresta_get_peso(aresta));
+					enqueue(v,fila);
+					no_vert = cria_no(v);
+					add_cauda(lista_vertices[v->id], no_vert);
+				}
+			}
 			no = obtem_proximo(no);
 		}
-		enqueue(aux, fila);
 	}
 	
 }
@@ -335,7 +340,7 @@ void exportar_grafo_dot(const char *filename, grafo_t *grafo)
 	arestas_t *contra_aresta;
 	lista_enc_t *lista_arestas;
 
-	int peso;
+	float peso;
 
 	if (filename == NULL || grafo == NULL){
 		fprintf(stderr, "exportar_grafp_dot: ponteiros invalidos\n");
