@@ -26,6 +26,9 @@ arestas_t *cria_aresta(vertice_t *fonte, vertice_t *destino, float peso);
 /* Obtem id de um vertice */
 int vertice_get_id(vertice_t *vertice);
 
+/* Nomeia o vertice */
+void vertice_set_nome(vertice_t *vertice, char *nome);
+
 /* Adiciona uma aresta a um grafo */
 void adiciona_aresta(vertice_t *vertice, arestas_t *aresta);
 

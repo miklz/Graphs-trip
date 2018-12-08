@@ -20,6 +20,8 @@
 #define FALSE 0
 #define TRUE 1
 #define INFINIT -1
+#define N 1000
+#define M 23
 
 //#define DEBUG
 
@@ -148,7 +150,7 @@ void adiciona_adjacentes(grafo_t *grafo, vertice_t *vertice, int n, ...)
 	arestas_t *aresta;
 
 	int id_sucessor;
-	int peso;
+	float peso;
         int x;
 
 	/* Initializing arguments to store all values after num */
@@ -157,7 +159,7 @@ void adiciona_adjacentes(grafo_t *grafo, vertice_t *vertice, int n, ...)
 	for (x = 0; x < n; x=x+2 )
 	{
 		id_sucessor = va_arg(argumentos, int);
-		peso = va_arg(argumentos, int);
+		peso = va_arg(argumentos, float);
 
 		sucessor = procura_vertice(grafo, id_sucessor);
 
@@ -178,6 +180,93 @@ void adiciona_adjacentes(grafo_t *grafo, vertice_t *vertice, int n, ...)
 	}
 
 	va_end (argumentos);
+}
+
+void read_table(grafo_t *grafo, char *table)
+{
+	char buffer[N], *city;
+	int i, j, cod, linha = 0, id[M];
+	float *time;
+	lista_enc_t *lista_vertices;
+	vertice_t * vertices;
+	no_t *no;
+	FILE *fp;
+	
+	fp = file_open(table, "r");
+	
+	if(!fp)
+	{
+		perror("Erro ao ler tabela");
+		exit(-1);
+	}
+	
+	city = malloc(sizeof(char)*M);
+	if(!city)
+	{
+		perror("Erro ao alocar cidades");
+		fclose(fp);
+		exit(-1);
+	}
+	
+	time = malloc(sizeof(float)*M);
+	if(!time)
+	{
+		perror("Erro ao alocar time");
+		fclose(fp);
+		exit(-1);
+	}
+	
+	while(fgets(buffer, N, fp)!=NULL)
+        linha++;
+	rewind(fp);
+	
+	fgets(buffer, N, fp);
+	sscanf("%s, %d, %d, %d, %d, %d, %d, %d, %d, %d, %d, %d, %d, %d, %d, %d, %d, %d, %d, %d, %d, %d, %d, %d,", city[0], &id[0], &id[1], &id[2], &id[3], &id[4], &id[5], &id[6], &id[7], &id[8], &id[9], &id[10], &id[11], &id[12], &id[13], &id[14], &id[15], &id[16], &id[17],&id[18], &id[19], &id[20], &id[21], &id[22]);
+	for(i = 0; i < M; i++)
+	{
+		vertices = cria_vertice(id[i]);
+		no = cria_no(vertices);
+		add_cauda(lista_vertices, no);
+	}
+	
+	fgets(buffer, N, fp);
+	sscanf("%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s,", city[0], city[1], city[2], city[3], city[4], city[5], city[6], city[7], city[8], city[9], city[10], city[11], city[12], city[13], city[14], city[15], city[16], city[17], city[18], city[19], city[20], city[21], city[22], city[23]);
+	for(i = 1; i <= M; i++)
+	{
+		vertices = buscar_vertice(lista_vertices, id[i-1]);
+		vertice_set_nome(vertice, city[i]);
+	}
+	
+	for(i = 2; i < linha; i++)
+	{
+		fgets(buffer, N, fp);
+		sscanf("%d, %s, %f, %f, %f, %f, %f, %f, %f, %f, %f, %f, %f, %f, %f, %f, %f, %f, %f, %f, %f, %f, %f, %f,", cod, city[0], &time[0], &time[1], &time[2], &time[3], &time[4], &time[5], &time[6], &time[7], &time[8], &time[9], &time[10], &time[11], &time[12], &time[13], &time[14], &time[15], &time[16], &time[17], &time[18], &time[19], &time[20], &time[21], &time[22]);
+		vertices = buscar_vertice(lista_vertices, cod);
+		if(!vertices)
+		{
+			vertices = cria_vertice(id);
+			no = cria_no(vertices);
+			add_cauda(lista_vertices, no);
+		}
+		for(j = 0; j < M; j++)
+			cria_aresta(grafo, vertices, 2, city[j+1], time[j]);
+	}
+}
+
+vertice_t *buscar_vertice(lista_enc_t *lista, int id)
+{
+	no_t* no;
+	vertice_t *vertice;
+	
+	no = obter_cabeca(lista);
+	
+	while(no)
+	{
+		vertice = obter_dado(no);
+		if(vertice_get_id(vertice) == id)
+			return vertice;
+		no = obtem_proximo;
+	}
 }
 
 /**

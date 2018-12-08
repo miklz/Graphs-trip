@@ -65,6 +65,11 @@ int vertice_get_id(vertice_t *vertice)
 	return vertice->id;
 }
 
+void vertice_set_nome(vertice_t *vertice, char *nome)
+{
+	vertice->nome = nome;
+}
+
 arestas_t *cria_aresta(vertice_t *fonte, vertice_t *destino, float peso)
 {
 	arestas_t *p;
