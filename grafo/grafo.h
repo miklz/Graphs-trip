@@ -35,7 +35,7 @@ void adiciona_adjacentes(grafo_t *grafo, vertice_t *vertice, int n, ...);
 vertice_t* procura_vertice(grafo_t *grafo, int id);
 
 /* Procura um vertice na lista de vertices com id numerico */
-vertice_t *buscar_vertice(lista_enc_t *lista, int id)
+vertice_t *buscar_vertice(lista_enc_t *lista, int id);
 
 /* Exporta o grafo utilizando a linguagem dot */
 void exportar_grafo_dot(const char *filename, grafo_t *grafo);
