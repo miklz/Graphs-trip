@@ -70,6 +70,11 @@ void vertice_set_nome(vertice_t *vertice, char *nome)
 	vertice->nome = nome;
 }
 
+char* vertice_get_nome(vertice_t *vertice)
+{
+    return vertice->nome;
+}
+
 arestas_t *cria_aresta(vertice_t *fonte, vertice_t *destino, float peso)
 {
 	arestas_t *p;
@@ -112,7 +117,7 @@ lista_enc_t *vertice_get_arestas(vertice_t *vertice)
 	return vertice->arestas;
 }
 
-int aresta_get_peso (arestas_t *aresta) {
+float aresta_get_peso (arestas_t *aresta) {
 	if (aresta == NULL){
 		fprintf(stderr, "aresta_get_peso: aresta invalido\n");
 		exit(EXIT_FAILURE);
@@ -207,15 +212,25 @@ void vertice_set_pai(vertice_t *vertice, vertice_t *pai) {
 	vertice->pai = pai;
 }
 
+vertice_t* vertice_get_pai(vertice_t *vertice) {
+
+	if (vertice == NULL){
+			fprintf(stderr, "vertice_set_pai: vertice invalido\n");
+			exit(EXIT_FAILURE);
+	}
+
+	return vertice->pai;
+}
+
 /* Para algoritmo BFS*/
-void vertice_set_dist(vertice_t *vertice, int dist) {
+void vertice_set_dist(vertice_t *vertice, float dist) {
 
 	if (vertice == NULL){
 			fprintf(stderr, "vertice_set_dist: vertice invalido\n");
 			exit(EXIT_FAILURE);
             }
 
-	vertice->dist =  dist;
+	vertice->dist = dist;
 }
 
 void vertice_visitado(vertice_t *vertice, int vist){
@@ -239,7 +254,7 @@ int vertice_get_visit(vertice_t *vertice){
     return vertice->visitado;
 }
 
-int vertice_get_dist(vertice_t *vertice){
+float vertice_get_dist(vertice_t *vertice){
 
 	if (vertice == NULL){
 			fprintf(stderr, "vertice_get_dist: vertice invalido\n");
@@ -249,7 +264,7 @@ int vertice_get_dist(vertice_t *vertice){
 	return vertice->dist;
 }
 
-int vertices_comprimento(vertice_t *fonte, vertice_t *destino)
+float vertices_comprimento(vertice_t *fonte, vertice_t *destino)
 {
 	arestas_t *aresta;
 

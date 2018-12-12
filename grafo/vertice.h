@@ -29,6 +29,8 @@ int vertice_get_id(vertice_t *vertice);
 /* Nomeia o vertice */
 void vertice_set_nome(vertice_t *vertice, char *nome);
 
+char* vertice_get_nome(vertice_t* vertice);
+
 /* Adiciona uma aresta a um grafo */
 void adiciona_aresta(vertice_t *vertice, arestas_t *aresta);
 
@@ -36,7 +38,7 @@ void adiciona_aresta(vertice_t *vertice, arestas_t *aresta);
 lista_enc_t *vertice_get_arestas(vertice_t *vertice);
 
 /* Retorna o peso de um aresta */
-int aresta_get_peso (arestas_t *aresta);
+float aresta_get_peso (arestas_t *aresta);
 
 /* Obtem o destinho de uma aresta */
 vertice_t *aresta_get_adjacente(arestas_t *aresta);
@@ -59,6 +61,7 @@ void vertice_set_grupo(vertice_t *vertice, int grupo);
  * Ver: struct vertices */
 void vertice_set_pai(vertice_t *vertice, vertice_t *pai);
 
+vertice_t* vertice_get_pai(vertice_t *vertice);
 
 /* Obtem membro id_grupo da struct vertice
  * Ver: struct vertices */
@@ -67,7 +70,7 @@ int vertice_get_grupo(vertice_t *vertice);
 
 /* Configura membro dist da struct vertice
  * Ver: struct vertices */
-void vertice_set_dist(vertice_t *vertice, int dist);
+void vertice_set_dist(vertice_t *vertice, float dist);
 
 void vertice_visitado(vertice_t *vertice, int vist);
 
@@ -75,7 +78,7 @@ int vertice_get_visit(vertice_t *vertice);
 
 /* Obtem valor dist da struct vertice
  * Ver: struct vertices  */
-int vertice_get_dist(vertice_t *vertice);
+float vertice_get_dist(vertice_t *vertice);
 
 /* Obtem vertice antecessor do menor caminho.
  * Configurado por Dijkstra  */
@@ -85,7 +88,7 @@ vertice_t *vertice_get_antec_caminho(vertice_t *vertice);
 void vertice_set_antec_caminho(vertice_t *vertice, vertice_t *antecessor);
 
 /* Retorna o comprimento de dois vertices adjacentes */
-int vertices_comprimento(vertice_t *fonte, vertice_t *destino);
+float vertices_comprimento(vertice_t *fonte, vertice_t *destino);
 
 
 #endif /* GRAFO_VERTICE_H_ */

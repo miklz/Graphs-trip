@@ -40,6 +40,8 @@ vertice_t *buscar_vertice(lista_enc_t *lista, int id);
 /* Exporta o grafo utilizando a linguagem dot */
 void exportar_grafo_dot(const char *filename, grafo_t *grafo);
 
+void exportar_grafo_prim(grafo_t *grafo);
+
 /* Libera memoria utilizada pelo grafo */
 void libera_grafo (grafo_t *grafo);
 
@@ -59,5 +61,7 @@ lista_enc_t* componentes_conexos(grafo_t *grafo);
 void bfs(grafo_t *grafo, vertice_t* inicial);
 
 void dfs(grafo_t *grafo, vertice_t* inicial);
+
+void prim_algorithm(grafo_t *grafo, int id);
 
 #endif /* GRAFO_GRAFO_H_ */
