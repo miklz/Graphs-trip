@@ -43,6 +43,8 @@ float aresta_get_peso (arestas_t *aresta);
 /* Obtem o destinho de uma aresta */
 vertice_t *aresta_get_adjacente(arestas_t *aresta);
 
+vertice_t *aresta_get_fonte(arestas_t *aresta);
+
 /* Retorna uma aresta caso seja fonte ou destino */
 arestas_t *procurar_adjacente(vertice_t *vertice, vertice_t *adjacente);
 

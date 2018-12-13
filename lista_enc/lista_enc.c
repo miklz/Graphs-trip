@@ -80,7 +80,7 @@ void add_cauda(lista_enc_t *lista, no_t* elemento)
 
 /**
   * @brief  Imprime os ponteiros de dados adicionados na lista.
-  * @param	lista: lista encadeada 
+  * @param	lista: lista encadeada
   *
   * @retval Nenhum
   */
@@ -278,7 +278,7 @@ void *remover_no(lista_enc_t *lista, no_t *no_removido)
 	while (meu_no){
 		dado = obter_dado(meu_no);
 
-		if (meu_no == no_removido){
+		if (dado == obter_dado(no_removido)){
 
 			if (meu_no == lista->cabeca)
 				remover_cabeca(lista);

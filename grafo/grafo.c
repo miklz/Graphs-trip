@@ -191,7 +191,7 @@ void adiciona_adjacentes(grafo_t *grafo, vertice_t *vertice, int n, ...)
 
 void read_table(grafo_t *grafo, char *table)
 {
-    char buffer[N], *city[M];
+    char buffer[N], *city[N];
     int i, j, cod, linha = 0, id[M];
     float *time;
     vertice_t *vertices;
@@ -205,7 +205,7 @@ void read_table(grafo_t *grafo, char *table)
         exit(-1);
     }
 
-    for (i=0; i < M; i++)
+    for (i=0; i < N; i++)
     {
         city[i] = malloc(sizeof(char)*32);
         if(!city[i])
@@ -262,7 +262,7 @@ void read_table(grafo_t *grafo, char *table)
     for(i = 2; i < linha; i++)
     {
         fgets(buffer, N, fp);
-        int ret = sscanf(buffer, "%d, %50[^,], %f, %f, %f, %f, %f, %f, %f, %f, %f, %f, %f, %f, %f, %f, %f, %f, %f, %f, %f, %f, %f, %f, %f,", &cod, city[0], &time[0], &time[1], &time[2], &time[3], &time[4], &time[5], &time[6], &time[7], &time[8], &time[9], &time[10], &time[11], &time[12], &time[13], &time[14], &time[15], &time[16], &time[17], &time[18], &time[19], &time[20], &time[21], &time[22]);
+        int ret = sscanf(buffer, "%d, %50[^,], %f, %f, %f, %f, %f, %f, %f, %f, %f, %f, %f, %f, %f, %f, %f, %f, %f, %f, %f, %f, %f, %f, %f,", &cod, city[22+i], &time[0], &time[1], &time[2], &time[3], &time[4], &time[5], &time[6], &time[7], &time[8], &time[9], &time[10], &time[11], &time[12], &time[13], &time[14], &time[15], &time[16], &time[17], &time[18], &time[19], &time[20], &time[21], &time[22]);
 
         if (ret != 25)
         {
@@ -274,6 +274,7 @@ void read_table(grafo_t *grafo, char *table)
         if(!vertices)
         {
             vertices = grafo_adicionar_vertice(grafo, cod);
+            vertice_set_nome(vertices, city[22+i]);
 #ifdef DEBUG
             printf("%d - %s\n", cod, city[0]);
 #endif // DEBUG
@@ -403,96 +404,105 @@ void dfs(grafo_t *grafo, vertice_t* inicial)
     }
 }
 
-void prim_algorithm(grafo_t* grafo, int id)
+lista_enc_t* prim_algorithm(grafo_t* grafo, int id)
 {
 
-    no_t *no;
-    fila_t* fila;
-    arestas_t *aresta;
+    no_t *no, *no_prim, *no_aux;
+    arestas_t *aresta, *aresta_aux;
     vertice_t *u, *v;
-    lista_enc_t *lista_aresta;
+    lista_enc_t *prim_arestas;
 
-    fila = cria_fila();
+    prim_arestas = cria_lista_enc();
     no = obter_cabeca(grafo->vertices);
 
     while(no)
     {
         v = obter_dado(no);
-        vertice_visitado(v, INFINIT);
+        vertice_set_dist(v, INFINIT);
         vertice_set_pai(v, NULL);
         if(vertice_get_id(v)==id)
-        {
-            vertice_visitado(v, TRUE);
-            enqueue(v, fila);
-        }
+            vertice_set_dist(v, FALSE);
         no = obtem_proximo(no);
     }
 
-    while(!fila_vazia(fila))
+    no = obter_cabeca(grafo->vertices);
+    u = procura_vertice(grafo, id);
+    while(no)
     {
-        u = dequeue(fila);
-        lista_aresta = vertice_get_arestas(u);
-        no = obter_cabeca(lista_aresta);
-        while(no)
+        no_aux = obter_cabeca(vertice_get_arestas(u));
+        while(no_aux)
         {
-            aresta = obter_dado(no);
+            aresta = obter_dado(no_aux);
             v = aresta_get_adjacente(aresta);
-            if(vertice_get_visit(v) == INFINIT)
+            if(vertice_get_dist(v)==INFINIT)
             {
                 vertice_set_pai(v,u);
                 vertice_set_dist(v,aresta_get_peso(aresta));
-                vertice_visitado(v, TRUE);
-                enqueue(v,fila);
+                no_prim = cria_no(aresta);
+                add_cauda(prim_arestas, no_prim);
             }
             else
             {
-                if(vertices_comprimento(u,v) < vertice_get_dist(v))
+                if(vertice_get_dist(v) > aresta_get_peso(aresta))
                 {
+                    aresta_aux = procurar_adjacente(vertice_get_pai(v), v);
+                    no_prim = cria_no(aresta_aux);
+                    remover_no(prim_arestas, no_prim);
                     vertice_set_pai(v,u);
                     vertice_set_dist(v,aresta_get_peso(aresta));
-                    enqueue(v,fila);
+                    no_prim = cria_no(aresta);
+                    add_cauda(prim_arestas, no_prim);
                 }
             }
 
-            no = obtem_proximo(no);
+            no_aux = obtem_proximo(no_aux);
+        }
+        no = obtem_proximo(no);
+        if(no)
+        {
+            u = obter_dado(no);
+            if(vertice_get_id(u)==id)
+            {
+                no = obtem_proximo(no);
+                u = obter_dado(no);
+            }
+            printf("proximo %s->%d\n", vertice_get_nome(u),vertice_get_id(u));
         }
     }
 
+    return prim_arestas;
 }
 
 
-void exportar_grafo_prim(grafo_t *grafo)
+void exportar_grafo_prim(lista_enc_t *spanning_tree)
 {
     FILE *fp;
 
-    no_t *no_vert;
+    no_t *no;
+    arestas_t *aresta;
     vertice_t *vertice, *pai;
 
     fp = fopen("grafo_prim's.txt", "w");
 
-    if (fp == NULL || grafo == NULL)
+    if (fp == NULL || spanning_tree == NULL)
     {
         fprintf(stderr, "exportar_grafp_dot: ponteiros invalidos\n");
         exit(EXIT_FAILURE);
     }
 
-    no_vert = obter_cabeca(grafo->vertices);
-
-    while(no_vert)
+    no = obter_cabeca(spanning_tree);
+    while(no)
     {
-        vertice = obter_dado(no_vert);
-        pai = vertice_get_pai(vertice);
-        if(pai == NULL)
-        {
-            printf("Origem -> %d\n", vertice_get_id(vertice));
-            no_vert  = obtem_proximo(no_vert);
-            continue;
-        }
+        aresta = obter_dado(no);
+        vertice = aresta_get_adjacente(aresta);
+        pai = aresta_get_fonte(aresta);
+        printf("\t\"%s\"\t -> \t\"%s\" \t[ label = \"%.2f\" ];\n", vertice_get_nome(pai), vertice_get_nome(vertice), aresta_get_peso(aresta));
+        fprintf(fp,"\t\"%s\"\t -> \t\"%s\" \t[ label = \"%.2f\" ];\n", vertice_get_nome(pai), vertice_get_nome(vertice), aresta_get_peso(aresta));
 
-        printf("\"%d\" -> \"%d\" [ label = \"%f\" ];\n", vertice_get_id(vertice), vertice_get_id(pai), vertices_comprimento(vertice, pai));
-        fprintf(fp, "\"%d\" -> \"%d\" [ label = \"%f\" ];\n", vertice_get_id(vertice), vertice_get_id(pai), vertices_comprimento(vertice, pai));
-        no_vert = obtem_proximo(no_vert);
+        no = obtem_proximo(no);
     }
+
+    fclose(fp);
 
 }
 /**

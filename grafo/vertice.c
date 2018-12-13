@@ -126,6 +126,16 @@ float aresta_get_peso (arestas_t *aresta) {
 	return aresta->peso;
 }
 
+vertice_t *aresta_get_fonte(arestas_t *aresta)
+{
+    if (aresta == NULL){
+		fprintf(stderr, "aresta_get_adjacente: aresta invalido\n");
+		exit(EXIT_FAILURE);
+	}
+
+	return aresta->fonte;
+}
+
 vertice_t *aresta_get_adjacente(arestas_t *aresta)
 {
 	if (aresta == NULL){
