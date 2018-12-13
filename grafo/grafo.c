@@ -409,7 +409,7 @@ lista_enc_t* prim_algorithm(grafo_t* grafo, int id)
 
     no_t *no, *no_prim, *no_aux;
     arestas_t *aresta, *aresta_aux;
-    vertice_t *u, *v;
+    vertice_t *u, *v, *x, *y;
     lista_enc_t *prim_arestas;
 
     prim_arestas = cria_lista_enc();
@@ -443,9 +443,23 @@ lista_enc_t* prim_algorithm(grafo_t* grafo, int id)
             }
             else
             {
-                if(vertice_get_dist(v) > aresta_get_peso(aresta))
+                if((vertice_get_dist(v) > aresta_get_peso(aresta)) & (vertice_get_pai(u)== v))
+                {
+                    aresta_aux = procurar_adjacente(v,u);
+                    no_prim = cria_no(aresta_aux);
+                    remover_no(prim_arestas, no_prim);
+                    aresta_aux = procurar_adjacente(u,v);
+                    no_prim = cria_no(aresta_aux);
+                    remover_no(prim_arestas, no_prim);
+                    no_prim = cria_no(aresta);
+                    add_cauda(prim_arestas, no_prim);
+                }
+                else if(vertice_get_dist(v) > aresta_get_peso(aresta))
                 {
                     aresta_aux = procurar_adjacente(vertice_get_pai(v), v);
+                    no_prim = cria_no(aresta_aux);
+                    remover_no(prim_arestas, no_prim);
+                    aresta_aux = procurar_adjacente(v,vertice_get_pai(v));
                     no_prim = cria_no(aresta_aux);
                     remover_no(prim_arestas, no_prim);
                     vertice_set_pai(v,u);
@@ -470,6 +484,25 @@ lista_enc_t* prim_algorithm(grafo_t* grafo, int id)
         }
     }
 
+    // Remover duplicatas
+    no = obter_cabeca(prim_arestas);
+    while(no)
+    {
+        aresta = obter_dado(no);
+        u = aresta_get_fonte(aresta);
+        v = aresta_get_adjacente(aresta);
+        no_prim = obter_cabeca(prim_arestas);
+        while(no_prim)
+        {
+            aresta_aux = obter_dado(no_prim);
+            x = aresta_get_fonte(aresta_aux);
+            y = aresta_get_adjacente(aresta_aux);
+            if((x == v) & (y == u) & (aresta_get_peso(aresta) == aresta_get_peso(aresta_aux)))
+                remover_no(prim_arestas,no_prim);
+            no_prim = obtem_proximo(no_prim);
+        }
+        no = obtem_proximo(no);
+    }
     return prim_arestas;
 }
 
@@ -496,8 +529,8 @@ void exportar_grafo_prim(lista_enc_t *spanning_tree)
         aresta = obter_dado(no);
         vertice = aresta_get_adjacente(aresta);
         pai = aresta_get_fonte(aresta);
-        printf("\t\"%s\"\t -> \t\"%s\" \t[ label = \"%.2f\" ];\n", vertice_get_nome(pai), vertice_get_nome(vertice), aresta_get_peso(aresta));
-        fprintf(fp,"\t\"%s\"\t -> \t\"%s\" \t[ label = \"%.2f\" ];\n", vertice_get_nome(pai), vertice_get_nome(vertice), aresta_get_peso(aresta));
+        printf("\t\"%s\"\t -> \t\"%s\" \t[ label = \"%.2f\" ];\n", vertice_get_nome(vertice), vertice_get_nome(pai), aresta_get_peso(aresta));
+        fprintf(fp,"\t\"%s\"\t -> \t\"%s\" \t[ label = \"%.2f\" ];\n", vertice_get_nome(vertice), vertice_get_nome(pai), aresta_get_peso(aresta));
 
         no = obtem_proximo(no);
     }
