@@ -1,6 +1,6 @@
 # Graphs-trip
 
-This project is a prerequisite to conclude the "Programação II" class. This was a project of my choice, and the end goal is to finding routes between cities utilizing minimum spanning tree.
+This project is a prerequisite to conclude the "Programação II" class. This was a project of my choice, and the end goal is to finding routes between cities using minimum spanning tree.
 
 ## Objective
 
@@ -15,13 +15,18 @@ Here is one demonstration of the Prim's Algorithm:
 
 By Shiyu Ji - Own work, CC BY-SA 4.0, https://commons.wikimedia.org/w/index.php?curid=54420894
 
-The Algorithm was coded in C and implemented using a chained list, it was used a table with the time between the major cities in my home country to puts the code to run.
+The Algorithm was coded in C and implemented using a chained list, it was used a table with the time between the major cities in my home country to test the code.
 
 ## Results
 
-The tests were consistent, we could foresee that the small cities were to surround the big cities. But some cities get isolated from the rest, due to the lack of time I couldn't fix the bug.
+The tests were consistent here's the result of the algorithm.
+
+![Result](img/MST.png)
+
+If you pay attention there's one isolated city in the top left of the image, this
+wasen't a bug im my code rather the tool that I used to generate the graph.
 
 ## Considerations
 
-It would be more easily to implement the code if I would have chose the approach by matrix instead of chained lists 
-
+It would be more efficient if the graph was implemented using adjacency matrix insted
+of chained lists like I did here.
