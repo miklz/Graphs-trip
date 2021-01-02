@@ -1,9 +1,9 @@
 #include <stdlib.h>
 #include <stdio.h>
 
-#include "../lista_enc/lista_enc.h"
-#include "../lista_enc/no.h"
+#include "no.h"
 #include "pilha.h"
+#include "lista_enc.h"
 
 //#define DEBUG
 
@@ -89,7 +89,7 @@ void *pop(pilha_t *pilha)
   * @brief Libera os dados da pilha. Somente se ela estiver fazia
   * @param pilha: pilha criada.
   *
-  * @retval Nenhum 
+  * @retval Nenhum
   */
 void libera_pilha(pilha_t* pilha)
 {
@@ -112,7 +112,7 @@ void libera_pilha(pilha_t* pilha)
   * @brief Retorna se a pilha está vazia
   * @param pilha: pilha criada
   *
-  * @retval int: verdadeiro se a pilha estiver vazia, senão falso 
+  * @retval int: verdadeiro se a pilha estiver vazia, senão falso
   */
 int pilha_vazia(pilha_t *pilha)
 {

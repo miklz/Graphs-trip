@@ -141,6 +141,10 @@ int lista_vazia(lista_enc_t *lista)
 	return ret;
 }
 
+int tamanho_lista(lista_enc_t *lista) {
+  return lista->tamanho;
+}
+
 /**
   * @brief  Obtém a referência do início (cabeça) da lista encadeada.
   * @param	lista: lista que se deseja obter o início.
@@ -299,4 +303,3 @@ void *remover_no(lista_enc_t *lista, no_t *no_removido)
 
 	return dado;
 }
-

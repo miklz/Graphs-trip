@@ -1,9 +1,9 @@
 #include <stdlib.h>
 #include <stdio.h>
 
-#include "../lista_enc/lista_enc.h"
-#include "../lista_enc/no.h"
+#include "no.h"
 #include "fila.h"
+#include "lista_enc.h"
 
 #define FALSO 0
 #define VERDADEIRO 1
@@ -34,7 +34,7 @@ fila_t * cria_fila (void)
 
 
 /**
-  * @brief Enfileira um novo dado. 
+  * @brief Enfileira um novo dado.
   * @param dado: referência do dado (ponteiro) a ser adicionado no topo da fila
   * @param fila: fila criada que receberá o dado.
   *
@@ -59,10 +59,10 @@ void enqueue(void* dado, fila_t *fila)
 
 
 /**
-  * @brief Retira da fila um dado. 
+  * @brief Retira da fila um dado.
   * @param fila: fila criada que retornará o dado.
   *
-  * @retval Nenhum 
+  * @retval Nenhum
   */
 void *dequeue(fila_t *fila)
 {
@@ -85,7 +85,7 @@ void *dequeue(fila_t *fila)
   * @brief Libera os dados da fila. Somente se ela estiver fazia
   * @param fila: fila criada.
   *
-  * @retval Nenhum 
+  * @retval Nenhum
   */
 void libera_fila(fila_t* fila)
 {
@@ -107,7 +107,7 @@ void libera_fila(fila_t* fila)
   * @brief Retorna se a fila está vazia
   * @param fila: fila criada
   *
-  * @retval int: verdadeiro se a fila estiver vazia, senão falso 
+  * @retval int: verdadeiro se a fila estiver vazia, senão falso
   */
 int fila_vazia(fila_t *fila)
 {
