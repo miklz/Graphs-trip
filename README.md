@@ -19,12 +19,12 @@ The Algorithm was coded in C and implemented using a chained list, it was used a
 
 ## Results
 
-The tests were consistent here's the result of the algorithm.
+The tests were consistent, here's the result of the algorithm:
 
 ![Result](img/MST.png)
 
-If you pay attention there's one isolated city in the top left of the image, this
-wasen't a bug im my code rather the tool that I used to generate the graph.
+If you pay attention there's one isolated city in the top right of the image, this
+wasn't a bug im my code, rather, the tool that I used to generate the graph.
 
 ## Considerations
 
